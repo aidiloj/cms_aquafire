@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -62,6 +63,7 @@ class DailyLogResource extends Resource
                 //
             ])
             ->actions([
+                ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
