@@ -6,6 +6,7 @@ use App\Filament\Resources\DailyLogResource\Pages;
 use App\Filament\Resources\DailyLogResource\RelationManagers;
 use App\Models\DailyLog;
 use Filament\Forms;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -34,16 +35,20 @@ class DailyLogResource extends Resource
                     ->columnSpanFull(),
                 RichEditor::make('content')
                     ->columnSpanFull(),
-                Section::make('Publish')
-                    ->description('Publish status of this log.')
-                    ->schema([
-                        Select::make('publish_status')
-                            ->options([
-                                'DRAFT' => 'Draft',
-                                'PUBLISHED' => 'Published'
-                            ])
-                            ->native(false),
+                Select::make('publish_status')
+                    ->options([
+                        'DRAFT' => 'Draft',
+                        'PUBLISHED' => 'Published'
                     ])
+                    ->native(false)
+                    ->reactive()
+                    ->default('DRAFT')
+                    ->required(),
+                DateTimePicker::make('published_date')
+                    ->native(false)
+                    ->default(null)
+                    ->required()
+                    ->visible(fn($get) => $get('publish_status') === 'PUBLISHED'),
             ]);
     }
 
@@ -70,7 +75,8 @@ class DailyLogResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('updated_at', 'desc');
     }
 
     public static function getRelations(): array

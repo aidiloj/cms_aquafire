@@ -9,7 +9,8 @@ class DailyLog extends Model
     protected $fillable = [
         'title',
         'images',
-        'published_status',
-        'content'
+        'publish_status',
+        'content',
+        'published_date'
     ];
 }
